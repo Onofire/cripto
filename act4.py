@@ -19,14 +19,14 @@ def pkcs5_unpad(text):
     padding = text[-1]
     return text[:-padding]
 
-# Función de cifrado que devuelve el texto cifrado en base64
+# cifrado
 def cifrar(algoritmo, key, iv, text):
     cipher = algoritmo.new(key, algoritmo.MODE_CBC, iv)
     text = pkcs5_pad(text, algoritmo.block_size)  # Aplicar padding PKCS5
     texto_cifrado = cipher.encrypt(text)
     return base64.b64encode(texto_cifrado).decode()
 
-# Función de descifrado que recibe texto cifrado en base64
+# descifrado
 def descifrar(algoritmo, key, iv, texto_cifrado_b64):
     texto_cifrado = base64.b64decode(texto_cifrado_b64)
     cipher = algoritmo.new(key, algoritmo.MODE_CBC, iv)
@@ -53,26 +53,26 @@ else:
     print("Algoritmo no reconocido.")
     sys.exit()
 
-# Solicitar los datos de entrada
+
 key = input("Ingresa la clave (key): ").encode()
 iv = input("Ingresa el vector de inicialización (IV de 8 bytes): ").encode()
 text = input("Ingresa el texto a cifrar: ").encode()
 
-# Ajustar la clave y el IV
+
 key = ajustar_clave(key, tamano_clave)
 iv = ajustar_clave(iv, tamano_iv)
 
-# Convertir la clave ajustada y el IV a base64 para mostrar en formato de texto legible
+# Convertir a texto legible con base64
 key_base64 = base64.b64encode(key).decode()
 iv_base64 = base64.b64encode(iv).decode()
 
 print(f"Clave ajustada (base64): {key_base64}")
 print(f"IV ajustado (base64): {iv_base64}")
 
-# Cifrar el texto y mostrar en base64
+# base64
 texto_cifrado_b64 = cifrar(algoritmo, key, iv, text)
 print(f"Texto cifrado ({algoritmo_nombre}) en base64:", texto_cifrado_b64)
 
-# Descifrar el texto cifrado en base64
+# Descifrar en base64
 texto_descifrado = descifrar(algoritmo, key, iv, texto_cifrado_b64)
 print(f"Texto descifrado ({algoritmo_nombre}):", texto_descifrado.decode())
